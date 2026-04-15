@@ -1,0 +1,358 @@
+// Prisma Schema - Production Database Design
+// Generator and datasource configuration
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  ACTIVE
+  COMPLETED
+}
+
+enum TemplateDifficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum TemplateCategory {
+  PASSWORD
+  PACKAGE
+  EXECUTIVE
+  PAYROLL
+  SECURITY
+  VENDOR
+  HR
+  SOCIAL
+  BANK
+  IT
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+// ============================================
+// CORE MODELS
+// ============================================
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  password      String
+  name          String
+  role          UserRole @default(USER)
+  department    String?
+  avatar        String?
+  
+  // Organization relationship
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  
+  // Timestamps
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  lastActiveAt  DateTime @default(now())
+  
+  // Relationships
+  campaignParticipations CampaignParticipant[]
+  quizAttempts          QuizAttempt[]
+  emailEvents           EmailEvent[]
+  
+  // Indexes for performance
+  @@index([email])
+  @@index([organizationId])
+  @@index([department])
+  @@index([role])
+  @@map("users")
+}
+
+model Organization {
+  id                String   @id @default(uuid())
+  name              String
+  domain            String?  @unique
+  logo              String?
+  
+  // Email configuration
+  smtpHost          String?
+  smtpPort          Int?
+  smtpUser          String?
+  smtpPassword      String?
+  fromEmail         String?
+  fromName          String?
+  
+  // Settings
+  primaryColor      String   @default("#4F46E5")
+  secondaryColor    String   @default("#10B981")
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relationships
+  users             User[]
+  campaigns         Campaign[]
+  templates         EmailTemplate[]
+  
+  @@map("organizations")
+}
+
+model Campaign {
+  id              String         @id @default(uuid())
+  name            String
+  description     String?
+  status          CampaignStatus @default(DRAFT)
+  
+  // Template relationship
+  templateId      String
+  template        EmailTemplate  @relation(fields: [templateId], references: [id], onDelete: Restrict)
+  
+  // Organization relationship
+  organizationId  String
+  organization    Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  // Scheduling
+  scheduledAt     DateTime?
+  launchedAt      DateTime?
+  completedAt     DateTime?
+  
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  // Relationships
+  participants    CampaignParticipant[]
+  emailEvents     EmailEvent[]
+  
+  @@index([organizationId])
+  @@index([status])
+  @@index([scheduledAt])
+  @@map("campaigns")
+}
+
+model CampaignParticipant {
+  id              String    @id @default(uuid())
+  
+  // Relationships
+  campaignId      String
+  campaign        Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Email tracking
+  emailSentAt     DateTime?
+  emailOpenedAt   DateTime?
+  linkClickedAt   DateTime?
+  timeToClick     Int?      // Time in seconds from email sent to click
+  
+  // Quiz tracking
+  quizCompletedAt DateTime?
+  quizScore       Int?
+  
+  // Status
+  isEmailSent     Boolean   @default(false)
+  isEmailOpened   Boolean   @default(false)
+  isLinkClicked   Boolean   @default(false)
+  isQuizCompleted Boolean   @default(false)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@unique([campaignId, userId])
+  @@index([campaignId])
+  @@index([userId])
+  @@map("campaign_participants")
+}
+
+model EmailTemplate {
+  id              String             @id @default(uuid())
+  name            String
+  description     String
+  difficulty      TemplateDifficulty
+  category        TemplateCategory
+  
+  // Email content
+  subject         String
+  fromName        String
+  fromEmail       String
+  body            String             @db.Text
+  ctaText         String?            // Call-to-action button text
+  ctaUrl          String?            // Call-to-action URL
+  
+  // Educational content
+  redFlags        String[]           // Array of red flag indicators
+  
+  // Organization relationship
+  organizationId  String?
+  organization    Organization?      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  
+  // Template type
+  isSystem        Boolean            @default(false) // System templates vs custom
+  
+  // Timestamps
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  
+  // Relationships
+  campaigns       Campaign[]
+  
+  @@index([organizationId])
+  @@index([category])
+  @@index([difficulty])
+  @@map("email_templates")
+}
+
+model EmailEvent {
+  id              String    @id @default(uuid())
+  eventType       String    // 'sent', 'opened', 'clicked', 'bounced'
+  
+  // Relationships
+  campaignId      String
+  campaign        Campaign  @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Event metadata
+  ipAddress       String?
+  userAgent       String?
+  clickedUrl      String?
+  
+  // Timestamp
+  occurredAt      DateTime  @default(now())
+  
+  @@index([campaignId])
+  @@index([userId])
+  @@index([eventType])
+  @@index([occurredAt])
+  @@map("email_events")
+}
+
+model Quiz {
+  id              String         @id @default(uuid())
+  title           String
+  description     String?
+  difficulty      TemplateDifficulty
+  category        TemplateCategory
+  
+  // Quiz settings
+  timeLimit       Int?           // Time limit in minutes
+  passingScore    Int            @default(70) // Percentage
+  
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  // Relationships
+  questions       QuizQuestion[]
+  attempts        QuizAttempt[]
+  
+  @@map("quizzes")
+}
+
+model QuizQuestion {
+  id              String   @id @default(uuid())
+  
+  // Quiz relationship
+  quizId          String
+  quiz            Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  
+  // Question content
+  question        String   @db.Text
+  options         String[] // Array of options
+  correctAnswer   Int      // Index of correct answer (0-based)
+  explanation     String?  @db.Text
+  
+  // Order
+  order           Int      @default(0)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([quizId])
+  @@map("quiz_questions")
+}
+
+model QuizAttempt {
+  id              String   @id @default(uuid())
+  
+  // Relationships
+  quizId          String
+  quiz            Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Attempt data
+  answers         Json     // Store user's answers
+  score           Int      // Score percentage (0-100)
+  timeSpent       Int      // Time spent in seconds
+  passed          Boolean  @default(false)
+  
+  // Timestamps
+  startedAt       DateTime @default(now())
+  completedAt     DateTime?
+  
+  @@index([quizId])
+  @@index([userId])
+  @@index([completedAt])
+  @@map("quiz_attempts")
+}
+
+// ============================================
+// AUDIT & TRACKING
+// ============================================
+
+model AuditLog {
+  id              String   @id @default(uuid())
+  userId          String?
+  action          String   // 'user.created', 'campaign.launched', etc.
+  entity          String   // 'user', 'campaign', 'template'
+  entityId        String
+  changes         Json?    // Store what changed
+  ipAddress       String?
+  userAgent       String?
+  
+  createdAt       DateTime @default(now())
+  
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model Session {
+  id              String   @id @default(uuid())
+  userId          String
+  token           String   @unique
+  expiresAt       DateTime
+  ipAddress       String?
+  userAgent       String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+  @@map("sessions")
+}
