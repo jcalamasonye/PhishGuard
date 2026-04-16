@@ -2,7 +2,7 @@
 
 Production-grade backend API for PhishGuard security awareness training platform.
 
-## 🏗️ Tech Stack
+## Tech Stack
 
 - **Runtime:** Node.js 20+
 - **Language:** TypeScript 5.7
@@ -13,13 +13,13 @@ Production-grade backend API for PhishGuard security awareness training platform
 - **Logging:** Winston
 - **Security:** Helmet, CORS, Rate Limiting
 
-## 📋 Prerequisites
+##  Prerequisites
 
 - Node.js >= 20.0.0
 - PostgreSQL >= 14.0
 - npm >= 10.0.0
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Clone and Install
 
@@ -70,7 +70,7 @@ npm run dev
 # The server will start on http://localhost:3001
 ```
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 backend/
@@ -106,7 +106,7 @@ backend/
 └── README.md
 ```
 
-## 🛠️ Available Scripts
+##  Available Scripts
 
 ```bash
 # Development
@@ -130,7 +130,7 @@ npm test             # Run tests
 npm run test:watch   # Run tests in watch mode
 ```
 
-## 🔐 Security Features
+##  Security Features
 
 - **Helmet.js** - Security HTTP headers
 - **CORS** - Cross-Origin Resource Sharing
@@ -141,7 +141,7 @@ npm run test:watch   # Run tests in watch mode
 - **SQL Injection Prevention** - Prisma ORM
 - **XSS Protection** - Built-in Express escaping
 
-## 📊 Database Models
+##  Database Models
 
 - **User** - User accounts (admin/user)
 - **Organization** - Multi-tenancy support
@@ -155,7 +155,7 @@ npm run test:watch   # Run tests in watch mode
 - **AuditLog** - System audit trail
 - **Session** - User sessions
 
-## 🌐 API Endpoints
+##  API Endpoints
 
 Base URL: `http://localhost:3001/api/v1`
 
@@ -193,7 +193,7 @@ Base URL: `http://localhost:3001/api/v1`
 ### Health Check
 - `GET /health` - Server health status
 
-## 🧪 Testing
+##  Testing
 
 ```bash
 # Run all tests
