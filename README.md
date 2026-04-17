@@ -206,7 +206,7 @@ npm run test:watch
 npm test -- --coverage
 ```
 
-## 📝 Logging
+##  Logging
 
 Logs are stored in the `logs/` directory:
 - `logs/app.log` - All logs
@@ -214,7 +214,7 @@ Logs are stored in the `logs/` directory:
 
 Log levels: `error`, `warn`, `info`, `debug`
 
-## 🚀 Deployment
+##  Deployment
 
 ### Build for Production
 
@@ -245,7 +245,7 @@ Ensure these are set in production:
 - `SESSION_SECRET` - Unique secret for sessions
 - `CORS_ORIGIN` - Your frontend URL
 
-## 🔧 Troubleshooting
+##  Troubleshooting
 
 ### Database Connection Issues
 
@@ -270,14 +270,14 @@ lsof -i :3001
 kill -9 <PID>
 ```
 
-## 📚 Additional Resources
+##  Additional Resources
 
 - [Express.js Documentation](https://expressjs.com/)
 - [Prisma Documentation](https://www.prisma.io/docs/)
 - [TypeScript Documentation](https://www.typescriptlang.org/docs/)
 - [Zod Documentation](https://zod.dev/)
 
-## 👥 Contributing
+##  Contributing
 
 1. Create a feature branch
 2. Make your changes
@@ -285,6 +285,6 @@ kill -9 <PID>
 4. Ensure linting passes
 5. Submit a pull request
 
-## 📄 License
+##  License
 
 MIT
