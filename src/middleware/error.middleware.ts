@@ -6,9 +6,7 @@ import { sendError } from '@/utils/response';
 import { logError } from '@/utils/logger';
 import { config } from '@/config';
 
-/**
- * Not Found middleware - Handle 404 errors
- */
+//  Not Found middleware - Handle 404 errors
 export const notFound = (req: Request, res: Response): void => {
   sendError(
     res,
@@ -18,9 +16,7 @@ export const notFound = (req: Request, res: Response): void => {
   );
 };
 
-/**
- * Global Error Handler middleware
- */
+// Global Error Handler middleware
 export const errorHandler = (
   err: Error,
   req: Request,
@@ -131,9 +127,7 @@ export const errorHandler = (
   );
 };
 
-/**
- * Handle Prisma-specific errors
- */
+// Handle Prisma-specific errors
 const handlePrismaError = (
   err: Prisma.PrismaClientKnownRequestError,
   res: Response
@@ -206,9 +200,7 @@ const handlePrismaError = (
   }
 };
 
-/**
- * Async error wrapper - Catch async errors in route handlers
- */
+// Async error wrapper - Catch async errors in route handlers
 export const asyncHandler = (
   fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
 ) => {

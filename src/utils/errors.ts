@@ -1,8 +1,3 @@
-/**
- * Custom Error Classes
- * Production-grade error handling with proper HTTP status codes
- */
-
 export class AppError extends Error {
   public readonly statusCode: number;
   public readonly isOperational: boolean;
@@ -20,9 +15,7 @@ export class AppError extends Error {
   }
 }
 
-/**
- * 400 Bad Request
- */
+// 400 Bad Request
 export class BadRequestError extends AppError {
   constructor(message = 'Bad Request') {
     super(message, 400);
@@ -30,9 +23,7 @@ export class BadRequestError extends AppError {
   }
 }
 
-/**
- * 401 Unauthorized
- */
+// 401 Unauthorized
 export class UnauthorizedError extends AppError {
   constructor(message = 'Unauthorized') {
     super(message, 401);
@@ -40,9 +31,7 @@ export class UnauthorizedError extends AppError {
   }
 }
 
-/**
- * 403 Forbidden
- */
+// 403 Forbidden
 export class ForbiddenError extends AppError {
   constructor(message = 'Forbidden') {
     super(message, 403);
@@ -50,9 +39,7 @@ export class ForbiddenError extends AppError {
   }
 }
 
-/**
- * 404 Not Found
- */
+// 404 Not Found
 export class NotFoundError extends AppError {
   constructor(message = 'Resource not found') {
     super(message, 404);
@@ -60,9 +47,7 @@ export class NotFoundError extends AppError {
   }
 }
 
-/**
- * 409 Conflict
- */
+// 409 Conflict
 export class ConflictError extends AppError {
   constructor(message = 'Resource already exists') {
     super(message, 409);
@@ -70,9 +55,7 @@ export class ConflictError extends AppError {
   }
 }
 
-/**
- * 422 Unprocessable Entity
- */
+// 422 Unprocessable Entity
 export class ValidationError extends AppError {
   public readonly errors: Array<{ field: string; message: string }>;
 
@@ -83,9 +66,7 @@ export class ValidationError extends AppError {
   }
 }
 
-/**
- * 429 Too Many Requests
- */
+// 429 Too Many Requests
 export class RateLimitError extends AppError {
   constructor(message = 'Too many requests, please try again later') {
     super(message, 429);
@@ -93,9 +74,7 @@ export class RateLimitError extends AppError {
   }
 }
 
-/**
- * 500 Internal Server Error
- */
+// 500 Internal Server Error
 export class InternalServerError extends AppError {
   constructor(message = 'Internal server error') {
     super(message, 500, false);
@@ -103,9 +82,7 @@ export class InternalServerError extends AppError {
   }
 }
 
-/**
- * 503 Service Unavailable
- */
+//  503 Service Unavailable
 export class ServiceUnavailableError extends AppError {
   constructor(message = 'Service temporarily unavailable') {
     super(message, 503, false);
@@ -113,9 +90,7 @@ export class ServiceUnavailableError extends AppError {
   }
 }
 
-/**
- * Database errors
- */
+// Database errors
 export class DatabaseError extends InternalServerError {
   constructor(message = 'Database operation failed') {
     super(message);
@@ -123,9 +98,7 @@ export class DatabaseError extends InternalServerError {
   }
 }
 
-/**
- * Check if error is operational (expected) or programming error
- */
+// Check if error is operational (expected) or programming error
 export const isOperationalError = (error: Error): boolean => {
   if (error instanceof AppError) {
     return error.isOperational;

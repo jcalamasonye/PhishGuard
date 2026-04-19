@@ -3,33 +3,25 @@ import jwt from 'jsonwebtoken';
 import { config } from '@/config';
 import { UnauthorizedError } from './errors';
 
-/**
- * JWT Payload Interface
- */
+// JWT Payload Interface
 export interface JwtPayload {
   userId: string;
   email: string;
   role: string;
 }
 
-/**
- * Token Pair Interface
- */
+// Token Pair Interface
 export interface TokenPair {
   accessToken: string;
   refreshToken: string;
 }
 
-/**
- * Hash password using bcrypt
- */
+// Hash password using bcrypt
 export const hashPassword = async (password: string): Promise<string> => {
   return bcrypt.hash(password, config.BCRYPT_ROUNDS);
 };
 
-/**
- * Compare password with hash
- */
+// Compare password with hash
 export const comparePassword = async (
   password: string,
   hashedPassword: string
@@ -37,31 +29,25 @@ export const comparePassword = async (
   return bcrypt.compare(password, hashedPassword);
 };
 
-/**
- * Generate JWT access token
- */
+// Generate JWT access token
 export const generateAccessToken = (payload: JwtPayload): string => {
   return jwt.sign(payload, config.JWT_SECRET, {
-    expiresIn: config.JWT_EXPIRES_IN,
+    expiresIn: config.JWT_EXPIRES_IN as any,
     issuer: 'phishguard-api',
     audience: 'phishguard-app',
   });
 };
 
-/**
- * Generate JWT refresh token
- */
+// Generate JWT refresh token
 export const generateRefreshToken = (payload: JwtPayload): string => {
   return jwt.sign(payload, config.JWT_REFRESH_SECRET, {
-    expiresIn: config.JWT_REFRESH_EXPIRES_IN,
+    expiresIn: config.JWT_REFRESH_EXPIRES_IN as any,
     issuer: 'phishguard-api',
     audience: 'phishguard-app',
   });
 };
 
-/**
- * Generate both access and refresh tokens
- */
+// Generate both access and refresh tokens
 export const generateTokenPair = (payload: JwtPayload): TokenPair => {
   return {
     accessToken: generateAccessToken(payload),
@@ -69,9 +55,7 @@ export const generateTokenPair = (payload: JwtPayload): TokenPair => {
   };
 };
 
-/**
- * Verify JWT access token
- */
+// Verify JWT access token
 export const verifyAccessToken = (token: string): JwtPayload => {
   try {
     const decoded = jwt.verify(token, config.JWT_SECRET, {
@@ -91,9 +75,7 @@ export const verifyAccessToken = (token: string): JwtPayload => {
   }
 };
 
-/**
- * Verify JWT refresh token
- */
+//  Verify JWT refresh token
 export const verifyRefreshToken = (token: string): JwtPayload => {
   try {
     const decoded = jwt.verify(token, config.JWT_REFRESH_SECRET, {
@@ -113,9 +95,7 @@ export const verifyRefreshToken = (token: string): JwtPayload => {
   }
 };
 
-/**
- * Extract token from Authorization header
- */
+// Extract token from Authorization header
 export const extractTokenFromHeader = (authHeader: string | undefined): string | null => {
   if (!authHeader) {
     return null;
@@ -129,16 +109,12 @@ export const extractTokenFromHeader = (authHeader: string | undefined): string |
   return parts[1];
 };
 
-/**
- * Generate random token (for password reset, email verification, etc.)
- */
+// Generate random token (for password reset, email verification, etc.)
 export const generateRandomToken = (): string => {
   return require('crypto').randomBytes(32).toString('hex');
 };
 
-/**
- * Validate password strength
- */
+// Validate password strength
 export const validatePasswordStrength = (password: string): { 
   isValid: boolean; 
   errors: string[] 

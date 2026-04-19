@@ -17,7 +17,7 @@ export const templateController = {
   }),
 
   getById: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const template = await templateService.getById(req.params.id);
+    const template = await templateService.getById(req.params['id'] as string);
     sendSuccess(res, template);
   }),
 
@@ -30,17 +30,17 @@ export const templateController = {
   }),
 
   update: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const template = await templateService.update(req.params.id, req.body);
+    const template = await templateService.update(req.params['id'] as string, req.body);
     sendSuccess(res, template, 'Template updated successfully');
   }),
 
   delete: asyncHandler(async (req: AuthRequest, res: Response) => {
-    await templateService.delete(req.params.id);
+    await templateService.delete(req.params['id'] as string);
     sendNoContent(res);
   }),
 
   duplicate: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const template = await templateService.duplicate(req.params.id, req.user?.organizationId);
+    const template = await templateService.duplicate(req.params['id'] as string, req.user?.organizationId);
     sendCreated(res, template, 'Template duplicated successfully');
   }),
 };

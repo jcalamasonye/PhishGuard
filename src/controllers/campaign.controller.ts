@@ -17,7 +17,7 @@ export const campaignController = {
   }),
 
   getById: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const campaign = await campaignService.getById(req.params.id);
+    const campaign = await campaignService.getById(req.params['id'] as string);
     sendSuccess(res, campaign);
   }),
 
@@ -30,22 +30,22 @@ export const campaignController = {
   }),
 
   update: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const campaign = await campaignService.update(req.params.id, req.body);
+    const campaign = await campaignService.update(req.params['id'] as string, req.body);
     sendSuccess(res, campaign, 'Campaign updated successfully');
   }),
 
   delete: asyncHandler(async (req: AuthRequest, res: Response) => {
-    await campaignService.delete(req.params.id);
+    await campaignService.delete(req.params['id'] as string);
     sendNoContent(res);
   }),
 
   launch: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const campaign = await campaignService.launch(req.params.id);
+    const campaign = await campaignService.launch(req.params['id'] as string);
     sendSuccess(res, campaign, 'Campaign launched successfully');
   }),
 
   getResults: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const results = await campaignService.getResults(req.params.id);
+    const results = await campaignService.getResults(req.params['id'] as string);
     sendSuccess(res, results);
   }),
 };

@@ -16,7 +16,7 @@ export const quizController = {
   }),
 
   getById: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const quiz = await quizService.getById(req.params.id);
+    const quiz = await quizService.getById(req.params['id'] as string);
     sendSuccess(res, quiz);
   }),
 
@@ -26,7 +26,7 @@ export const quizController = {
   }),
 
   submit: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const result = await quizService.submitQuiz(req.params.id, req.user!.id, req.body);
+    const result = await quizService.submitQuiz(req.params['id'] as string, req.user!.id, req.body);
     sendSuccess(res, result, 'Quiz submitted successfully');
   }),
 
@@ -36,7 +36,7 @@ export const quizController = {
   }),
 
   getAttemptById: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const attempt = await quizService.getAttemptById(req.params.id);
+    const attempt = await quizService.getAttemptById(req.params['id'] as string);
     sendSuccess(res, attempt);
   }),
 };

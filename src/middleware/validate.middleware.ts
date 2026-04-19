@@ -2,9 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { ZodSchema } from 'zod';
 import { ValidationError } from '@/utils/errors';
 
-/**
- * Validate request body against Zod schema
- */
+
+// Validate request body against Zod schema
 export const validateBody = (schema: ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     try {
@@ -16,9 +15,7 @@ export const validateBody = (schema: ZodSchema) => {
   };
 };
 
-/**
- * Validate request query parameters against Zod schema
- */
+// Validate request query parameters against Zod schema
 export const validateQuery = (schema: ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     try {
@@ -30,9 +27,7 @@ export const validateQuery = (schema: ZodSchema) => {
   };
 };
 
-/**
- * Validate request params against Zod schema
- */
+// Validate request params against Zod schema
 export const validateParams = (schema: ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     try {
@@ -44,9 +39,7 @@ export const validateParams = (schema: ZodSchema) => {
   };
 };
 
-/**
- * Validate multiple parts of request
- */
+// Validate multiple parts of request
 export const validate = (schemas: {
   body?: ZodSchema;
   query?: ZodSchema;

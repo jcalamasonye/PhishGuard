@@ -1,8 +1,6 @@
 import { Response } from 'express';
 
-/**
- * Standard API Response Interface
- */
+// Standard API Response Interface
 export interface ApiResponse<T = any> {
   success: boolean;
   message?: string;
@@ -20,9 +18,7 @@ export interface ApiResponse<T = any> {
   };
 }
 
-/**
- * Send success response
- */
+// Send success response
 export const sendSuccess = <T = any>(
   res: Response,
   data: T,
@@ -46,9 +42,7 @@ export const sendSuccess = <T = any>(
   return res.status(statusCode).json(response);
 };
 
-/**
- * Send created response (201)
- */
+// Send created response (201)
 export const sendCreated = <T = any>(
   res: Response,
   data: T,
@@ -57,16 +51,12 @@ export const sendCreated = <T = any>(
   return sendSuccess(res, data, message, 201);
 };
 
-/**
- * Send no content response (204)
- */
+// Send no content response (204)
 export const sendNoContent = (res: Response): Response => {
   return res.status(204).send();
 };
 
-/**
- * Send error response
- */
+// Send error response
 export const sendError = (
   res: Response,
   statusCode: number,
@@ -86,9 +76,7 @@ export const sendError = (
   return res.status(statusCode).json(response);
 };
 
-/**
- * Send paginated response
- */
+// Send paginated response
 export const sendPaginated = <T = any>(
   res: Response,
   data: T[],
@@ -113,9 +101,7 @@ export const sendPaginated = <T = any>(
   );
 };
 
-/**
- * Response helpers for common scenarios
- */
+// Response helpers for common scenarios
 export const responses = {
   // Success responses
   ok: (res: Response, data: any, message?: string) => 

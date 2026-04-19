@@ -4,9 +4,7 @@ import cors from 'cors';
 import { config } from '@/config';
 import { RateLimitError } from '@/utils/errors';
 
-/**
- * Helmet middleware - Set security HTTP headers
- */
+// Helmet middleware - Set security HTTP headers
 export const helmetMiddleware = helmet({
   contentSecurityPolicy: {
     directives: {
@@ -23,9 +21,7 @@ export const helmetMiddleware = helmet({
   },
 });
 
-/**
- * CORS middleware - Configure Cross-Origin Resource Sharing
- */
+// CORS middleware - Configure Cross-Origin Resource Sharing
 export const corsMiddleware = cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps or curl requests)
@@ -48,9 +44,7 @@ export const corsMiddleware = cors({
   maxAge: 86400, // 24 hours
 });
 
-/**
- * General rate limiter
- */
+// General rate limiter
 export const rateLimiter = rateLimit({
   windowMs: config.RATE_LIMIT_WINDOW_MS,
   max: config.RATE_LIMIT_MAX_REQUESTS,
@@ -62,27 +56,23 @@ export const rateLimiter = rateLimit({
   },
 });
 
-/**
- * Strict rate limiter for sensitive endpoints (auth)
- */
+//  Strict rate limiter for sensitive endpoints (auth)
 export const strictRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // 5 requests per window
+  windowMs: 15 * 60 * 1000,
+  max: 5, 
   message: 'Too many attempts, please try again later',
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
     throw new RateLimitError('Too many login attempts, please try again in 15 minutes');
   },
-  skipSuccessfulRequests: true, // Don't count successful requests
+  skipSuccessfulRequests: true, 
 });
 
-/**
- * API rate limiter (more lenient for authenticated requests)
- */
+//  * API rate limiter (more lenient for authenticated requests)
 export const apiRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200, // 200 requests per window
+  windowMs: 15 * 60 * 1000,
+  max: 200, 
   message: 'API rate limit exceeded',
   standardHeaders: true,
   legacyHeaders: false,
@@ -91,12 +81,10 @@ export const apiRateLimiter = rateLimit({
   },
 });
 
-/**
- * File upload rate limiter
- */
+//  File upload rate limiter
 export const uploadRateLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 10, // 10 uploads per hour
+  windowMs: 60 * 60 * 1000,
+  max: 10,
   message: 'Too many file uploads',
   standardHeaders: true,
   legacyHeaders: false,

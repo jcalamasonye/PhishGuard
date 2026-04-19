@@ -1103,3 +1103,62 @@
 {"level":"info","message":{"duration":"49ms","ip":"::1","method":"GET","status":200,"url":"/api/v1/auth/me"},"service":"phishguard-backend","timestamp":"2026-04-14 00:12:56"}
 {"level":"info","message":{"duration":"2ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/quizzes/attempts"},"service":"phishguard-backend","timestamp":"2026-04-14 00:12:56"}
 {"level":"info","message":{"duration":"79ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/users/b4391ea6-7ec3-430f-ba27-7bdbd5c4afb6/performance"},"service":"phishguard-backend","timestamp":"2026-04-14 00:12:56"}
+{"level":"info","message":"✓ Database connected successfully","service":"phishguard-backend","timestamp":"2026-04-16 01:24:28"}
+{"level":"info","message":"🚀 ============================================","service":"phishguard-backend","timestamp":"2026-04-16 01:24:28"}
+{"level":"info","message":"🚀 Server started successfully!","service":"phishguard-backend","timestamp":"2026-04-16 01:24:28"}
+{"level":"info","message":"🚀 Environment: development","service":"phishguard-backend","timestamp":"2026-04-16 01:24:28"}
+{"level":"info","message":"🚀 Port: 3001","service":"phishguard-backend","timestamp":"2026-04-16 01:24:28"}
+{"level":"info","message":"🚀 API Version: v1","service":"phishguard-backend","timestamp":"2026-04-16 01:24:28"}
+{"level":"info","message":"🚀 Health Check: http://localhost:3001/health","service":"phishguard-backend","timestamp":"2026-04-16 01:24:28"}
+{"level":"info","message":"🚀 API Base URL: http://localhost:3001/api/v1","service":"phishguard-backend","timestamp":"2026-04-16 01:24:28"}
+{"level":"info","message":"🚀 ============================================","service":"phishguard-backend","timestamp":"2026-04-16 01:24:28"}
+{"level":"info","message":"\nSIGINT received, starting graceful shutdown...","service":"phishguard-backend","timestamp":"2026-04-16 01:24:31"}
+{"level":"info","message":"HTTP server closed","service":"phishguard-backend","timestamp":"2026-04-16 01:24:31"}
+{"level":"info","message":"\nSIGINT received, starting graceful shutdown...","service":"phishguard-backend","timestamp":"2026-04-16 01:24:31"}
+{"level":"info","message":"HTTP server closed","service":"phishguard-backend","timestamp":"2026-04-16 01:24:31"}
+{"level":"info","message":"✓ Database disconnected successfully","service":"phishguard-backend","timestamp":"2026-04-16 01:24:31"}
+{"level":"info","message":"✓ Database connected successfully","service":"phishguard-backend","timestamp":"2026-04-17 11:10:45"}
+{"level":"info","message":"🚀 ============================================","service":"phishguard-backend","timestamp":"2026-04-17 11:10:45"}
+{"level":"info","message":"🚀 Server started successfully!","service":"phishguard-backend","timestamp":"2026-04-17 11:10:45"}
+{"level":"info","message":"🚀 Environment: development","service":"phishguard-backend","timestamp":"2026-04-17 11:10:45"}
+{"level":"info","message":"🚀 Port: 3001","service":"phishguard-backend","timestamp":"2026-04-17 11:10:45"}
+{"level":"info","message":"🚀 API Version: v1","service":"phishguard-backend","timestamp":"2026-04-17 11:10:45"}
+{"level":"info","message":"🚀 Health Check: http://localhost:3001/health","service":"phishguard-backend","timestamp":"2026-04-17 11:10:45"}
+{"level":"info","message":"🚀 API Base URL: http://localhost:3001/api/v1","service":"phishguard-backend","timestamp":"2026-04-17 11:10:45"}
+{"level":"info","message":"🚀 ============================================","service":"phishguard-backend","timestamp":"2026-04-17 11:10:45"}
+{"level":"info","message":"User registered: favour12@gmail.com","service":"phishguard-backend","timestamp":"2026-04-17 11:11:54"}
+{"level":"info","message":{"duration":"349ms","ip":"::1","method":"POST","status":201,"url":"/api/v1/auth/register"},"service":"phishguard-backend","timestamp":"2026-04-17 11:11:54"}
+{"level":"info","message":{"duration":"75ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/analytics/template-performance"},"service":"phishguard-backend","timestamp":"2026-04-17 11:11:55"}
+{"level":"info","message":{"duration":"81ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/analytics/trend?days=90"},"service":"phishguard-backend","timestamp":"2026-04-17 11:11:55"}
+{"level":"info","message":{"duration":"93ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/analytics/overview"},"service":"phishguard-backend","timestamp":"2026-04-17 11:11:55"}
+{"level":"info","message":{"duration":"91ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/campaigns?limit=5"},"service":"phishguard-backend","timestamp":"2026-04-17 11:11:55"}
+{"level":"info","message":{"duration":"25ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/campaigns?page=1&limit=10"},"service":"phishguard-backend","timestamp":"2026-04-17 11:12:00"}
+{"level":"info","message":{"duration":"23ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/templates?limit=50"},"service":"phishguard-backend","timestamp":"2026-04-17 11:12:11"}
+{"level":"info","message":{"duration":"5ms","ip":"::1","method":"GET","status":200,"url":"/api/v1/users?page=1&limit=10&role=USER"},"service":"phishguard-backend","timestamp":"2026-04-17 11:12:25"}
+{"level":"info","message":{"duration":"5ms","ip":"::1","method":"GET","status":200,"url":"/api/v1/analytics/risk-assessment"},"service":"phishguard-backend","timestamp":"2026-04-17 11:12:25"}
+{"level":"info","message":{"duration":"21ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/campaigns?page=1&limit=10"},"service":"phishguard-backend","timestamp":"2026-04-17 11:12:34"}
+{"level":"info","message":{"duration":"20ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/campaigns?page=1&limit=10"},"service":"phishguard-backend","timestamp":"2026-04-17 11:12:34"}
+{"level":"info","message":{"duration":"6ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/templates?limit=50"},"service":"phishguard-backend","timestamp":"2026-04-17 11:12:44"}
+{"level":"info","message":{"duration":"4ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/templates?limit=50"},"service":"phishguard-backend","timestamp":"2026-04-17 11:12:44"}
+{"level":"info","message":{"duration":"18ms","ip":"::1","method":"POST","status":201,"url":"/api/v1/templates"},"service":"phishguard-backend","timestamp":"2026-04-17 11:13:48"}
+{"level":"info","message":{"duration":"5ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/users?page=1&limit=10&role=USER"},"service":"phishguard-backend","timestamp":"2026-04-17 11:13:48"}
+{"level":"info","message":{"duration":"5ms","ip":"::1","method":"GET","status":200,"url":"/api/v1/templates/1ea00463-bebb-4b04-b43c-974e4067b101"},"service":"phishguard-backend","timestamp":"2026-04-17 11:13:48"}
+{"level":"info","message":{"duration":"4ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/users?page=1&limit=10&role=USER"},"service":"phishguard-backend","timestamp":"2026-04-17 11:13:48"}
+{"level":"info","message":{"duration":"22ms","ip":"::1","method":"POST","status":201,"url":"/api/v1/campaigns"},"service":"phishguard-backend","timestamp":"2026-04-17 11:14:10"}
+{"level":"info","message":{"duration":"10ms","ip":"::1","method":"POST","status":200,"url":"/api/v1/campaigns/d455dbb7-d6fe-4817-bff1-1be8acfc7b3e/launch"},"service":"phishguard-backend","timestamp":"2026-04-17 11:14:10"}
+{"level":"info","message":{"duration":"20ms","ip":"::1","method":"GET","status":200,"url":"/api/v1/campaigns?page=1&limit=10"},"service":"phishguard-backend","timestamp":"2026-04-17 11:14:11"}
+{"level":"info","message":{"duration":"25ms","ip":"::1","method":"GET","status":200,"url":"/api/v1/campaigns?page=1&limit=10"},"service":"phishguard-backend","timestamp":"2026-04-17 11:14:11"}
+{"level":"info","message":{"duration":"3ms","ip":"::1","method":"GET","status":200,"url":"/api/v1/campaigns/d455dbb7-d6fe-4817-bff1-1be8acfc7b3e/results"},"service":"phishguard-backend","timestamp":"2026-04-17 11:14:21"}
+{"level":"info","message":{"duration":"16ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/analytics/risk-assessment"},"service":"phishguard-backend","timestamp":"2026-04-17 11:15:00"}
+{"level":"info","message":{"duration":"16ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/analytics/risk-assessment"},"service":"phishguard-backend","timestamp":"2026-04-17 11:15:00"}
+{"level":"info","message":{"duration":"20ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/users?page=1&limit=10&role=USER"},"service":"phishguard-backend","timestamp":"2026-04-17 11:15:00"}
+{"level":"info","message":{"duration":"17ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/users?page=1&limit=10&role=USER"},"service":"phishguard-backend","timestamp":"2026-04-17 11:15:00"}
+{"level":"info","message":{"duration":"28ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/campaigns?page=1&limit=10"},"service":"phishguard-backend","timestamp":"2026-04-17 11:15:03"}
+{"level":"info","message":{"duration":"25ms","ip":"::1","method":"GET","status":304,"url":"/api/v1/campaigns?page=1&limit=10"},"service":"phishguard-backend","timestamp":"2026-04-17 11:15:03"}
+{"level":"info","message":{"duration":"12ms","ip":"::1","method":"DELETE","status":204,"url":"/api/v1/campaigns/d455dbb7-d6fe-4817-bff1-1be8acfc7b3e"},"service":"phishguard-backend","timestamp":"2026-04-17 11:15:29"}
+{"level":"info","message":{"duration":"5ms","ip":"::1","method":"GET","status":200,"url":"/api/v1/campaigns?page=1&limit=10"},"service":"phishguard-backend","timestamp":"2026-04-17 11:15:29"}
+{"level":"info","message":"\nSIGINT received, starting graceful shutdown...","service":"phishguard-backend","timestamp":"2026-04-17 11:22:04"}
+{"level":"info","message":"HTTP server closed","service":"phishguard-backend","timestamp":"2026-04-17 11:22:04"}
+{"level":"info","message":"\nSIGINT received, starting graceful shutdown...","service":"phishguard-backend","timestamp":"2026-04-17 11:22:04"}
+{"level":"info","message":"HTTP server closed","service":"phishguard-backend","timestamp":"2026-04-17 11:22:04"}
+{"level":"info","message":"✓ Database disconnected successfully","service":"phishguard-backend","timestamp":"2026-04-17 11:22:04"}

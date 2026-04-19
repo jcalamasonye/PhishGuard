@@ -1,9 +1,5 @@
 import { z } from 'zod';
 
-/**
- * Common validation schemas
- */
-
 // Email validation
 export const emailSchema = z.string().email('Invalid email address').trim().toLowerCase();
 
@@ -28,9 +24,7 @@ export const paginationSchema = z.object({
 // Date validation
 export const dateSchema = z.string().datetime().or(z.date());
 
-/**
- * Auth validation schemas
- */
+// Auth validation schemas
 export const loginSchema = z.object({
   email: emailSchema,
   password: z.string().min(1, 'Password is required'),
@@ -53,9 +47,7 @@ export const forgotPasswordSchema = z.object({
   email: emailSchema,
 });
 
-/**
- * User validation schemas
- */
+// User validation schemas
 export const createUserSchema = z.object({
   name: z.string().min(2).max(100),
   email: emailSchema,
@@ -80,9 +72,7 @@ export const bulkUploadUsersSchema = z.object({
   sendWelcomeEmail: z.boolean().default(true),
 });
 
-/**
- * Campaign validation schemas
- */
+// Campaign validation schemas
 export const createCampaignSchema = z.object({
   name: z.string().min(3, 'Campaign name must be at least 3 characters').max(200),
   description: z.string().max(1000).optional(),
@@ -104,9 +94,7 @@ export const campaignFiltersSchema = z.object({
   search: z.string().optional(),
 });
 
-/**
- * Template validation schemas
- */
+// Template validation schemas
 export const createTemplateSchema = z.object({
   name: z.string().min(3).max(200),
   description: z.string().min(10).max(1000),
@@ -134,9 +122,7 @@ export const createTemplateSchema = z.object({
 
 export const updateTemplateSchema = createTemplateSchema.partial();
 
-/**
- * Quiz validation schemas
- */
+// Quiz validation schemas
 export const createQuizSchema = z.object({
   title: z.string().min(3).max(200),
   description: z.string().max(1000).optional(),
@@ -171,9 +157,7 @@ export const submitQuizSchema = z.object({
   timeSpent: z.number().int().positive(),
 });
 
-/**
- * Organization validation schemas
- */
+// Organization validation schemas
 export const updateOrganizationSchema = z.object({
   name: z.string().min(2).max(200).optional(),
   logo: z.string().url().optional(),
@@ -187,16 +171,12 @@ export const updateOrganizationSchema = z.object({
   fromName: z.string().optional(),
 });
 
-/**
- * Helper to validate data against schema
- */
+// Helper to validate data against schema
 export const validate = <T>(schema: z.ZodSchema<T>, data: unknown): T => {
   return schema.parse(data);
 };
 
-/**
- * Helper for safe validation (returns errors instead of throwing)
- */
+// Helper for safe validation (returns errors instead of throwing)
 export const validateSafe = <T>(
   schema: z.ZodSchema<T>,
   data: unknown

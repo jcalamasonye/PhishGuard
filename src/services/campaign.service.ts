@@ -1,4 +1,5 @@
 import prisma from '../utils/database';
+import { CampaignStatus } from '@prisma/client';
 import { NotFoundError } from '../utils/errors';
 
 export const campaignService = {
@@ -48,7 +49,7 @@ export const campaignService = {
     ]);
 
     const campaignsWithStats = await Promise.all(
-      campaigns.map(async (campaign) => {
+      campaigns.map(async (campaign: typeof campaigns[number]) => {
         const stats = await prisma.campaignParticipant.aggregate({
           where: { campaignId: campaign.id },
           _count: {
@@ -135,7 +136,7 @@ export const campaignService = {
     return campaign;
   },
 
-  async update(id: string, data: { name?: string; description?: string; status?: string }) {
+  async update(id: string, data: { name?: string; description?: string; status?: CampaignStatus }) {
     const campaign = await prisma.campaign.update({
       where: { id },
       data,

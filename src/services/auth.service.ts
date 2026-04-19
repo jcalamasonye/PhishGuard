@@ -120,17 +120,25 @@ export const authService = {
   async refreshToken(oldRefreshToken: string) {
     const session = await prisma.session.findUnique({
       where: { token: oldRefreshToken },
-      include: { user: true },
     });
 
     if (!session || session.expiresAt < new Date()) {
       throw new UnauthorizedError('Invalid or expired refresh token');
     }
 
+    const user = await prisma.user.findUnique({
+      where: { id: session.userId },
+      select: { email: true, role: true },
+    });
+
+    if (!user) {
+      throw new UnauthorizedError('Invalid or expired refresh token');
+    }
+
     const tokens = generateTokenPair({
       userId: session.userId,
-      email: session.user.email,
-      role: session.user.role,
+      email: user.email,
+      role: user.role,
     });
 
     await prisma.session.update({

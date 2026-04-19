@@ -3,11 +3,6 @@ import path from 'path';
 
 // Load environment variables
 dotenv.config();
-
-/**
- * Application Configuration
- * Centralized configuration management with validation
- */
 class Config {
   // Server
   public readonly NODE_ENV: string;
@@ -104,9 +99,8 @@ class Config {
     this.validate();
   }
 
-  /**
-   * Get environment variable or throw error if not found
-   */
+  
+  //  Get environment variable or throw error if not found
   private getEnvVar(key: string): string {
     const value = process.env[key];
     if (!value) {
@@ -115,9 +109,7 @@ class Config {
     return value;
   }
 
-  /**
-   * Validate configuration
-   */
+  // Validate configuration
   private validate(): void {
     if (this.PORT < 1 || this.PORT > 65535) {
       throw new Error('PORT must be between 1 and 65535');
@@ -138,23 +130,18 @@ class Config {
     }
   }
 
-  /**
-   * Check if running in production
-   */
-  public get isProduction(): boolean {
+ 
+  // Check if running in production
+   public get isProduction(): boolean {
     return this.NODE_ENV === 'production';
   }
 
-  /**
-   * Check if running in development
-   */
+  // Check if running in development
   public get isDevelopment(): boolean {
     return this.NODE_ENV === 'development';
   }
 
-  /**
-   * Check if running in test
-   */
+  // Check if running in test
   public get isTest(): boolean {
     return this.NODE_ENV === 'test';
   }

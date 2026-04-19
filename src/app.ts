@@ -10,28 +10,20 @@ import { errorHandler, notFound } from '@/middleware/error.middleware';
 import logger from '@/utils/logger';
 import routes from '@/routes';
 
-/**
- * Create and configure Express application
- */
+// Create and configure Express application
 export const createApp = (): Application => {
   const app = express();
 
-  // ============================================
   // SECURITY MIDDLEWARE
-  // ============================================
   app.use(helmetMiddleware);
   app.use(corsMiddleware);
   
-  // ============================================
   // BODY PARSING MIDDLEWARE
-  // ============================================
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
   app.use(cookieParser());
 
-  // ============================================
-  // REQUEST LOGGING (Development only)
-  // ============================================
+  // REQUEST LOGGING
   if (config.isDevelopment) {
     app.use((req, res, next) => {
       const start = Date.now();
@@ -51,9 +43,7 @@ export const createApp = (): Application => {
     });
   }
 
-  // ============================================
   // HEALTH CHECK ENDPOINT
-  // ============================================
   app.get('/health', (req, res) => {
     res.json({
       status: 'ok',
@@ -73,9 +63,7 @@ export const createApp = (): Application => {
     });
   });
 
-  // ============================================
   // API ROUTES
-  // ============================================
   const apiPrefix = `/api/${config.API_VERSION}`;
 
   // Apply rate limiting to API routes
@@ -84,10 +72,6 @@ export const createApp = (): Application => {
   // Register all routes
   app.use(apiPrefix, routes);
 
-  // ============================================
-  // ERROR HANDLING
-  // ============================================
-  
   // 404 handler - must be after all routes
   app.use(notFound);
 

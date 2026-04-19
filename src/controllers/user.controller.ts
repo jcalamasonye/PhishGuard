@@ -17,7 +17,7 @@ export const userController = {
   }),
 
   getById: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const user = await userService.getById(req.params.id);
+    const user = await userService.getById(req.params['id'] as string);
     sendSuccess(res, user);
   }),
 
@@ -30,12 +30,12 @@ export const userController = {
   }),
 
   update: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const user = await userService.update(req.params.id, req.body);
+    const user = await userService.update(req.params['id'] as string, req.body);
     sendSuccess(res, user, 'User updated successfully');
   }),
 
   delete: asyncHandler(async (req: AuthRequest, res: Response) => {
-    await userService.delete(req.params.id);
+    await userService.delete(req.params['id'] as string);
     sendNoContent(res);
   }),
 
@@ -45,7 +45,7 @@ export const userController = {
   }),
 
   getPerformance: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const performance = await userService.getPerformance(req.params.id);
+    const performance = await userService.getPerformance(req.params['id'] as string);
     sendSuccess(res, performance);
   }),
 };

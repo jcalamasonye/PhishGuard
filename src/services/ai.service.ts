@@ -1,6 +1,6 @@
 import logger from '@/utils/logger';
 
-const AI_API_URL = process.env.AI_API_URL || 'http://localhost:8000';
+const AI_API_URL = process.env['AI_API_URL'] || 'http://localhost:8000';
 
 export interface AIAnalysisResult {
   is_phishing: boolean;
@@ -29,7 +29,7 @@ export const aiService = {
       throw new Error(`AI analysis failed: ${response.statusText}`);
     }
 
-    return response.json();
+    return response.json() as Promise<AIAnalysisResult>;
   },
 
   async batchAnalyze(emails: string[]): Promise<AIAnalysisResult[]> {
@@ -43,7 +43,7 @@ export const aiService = {
       throw new Error(`AI batch analysis failed: ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data = await response.json() as { results: AIAnalysisResult[] };
     return data.results;
   },
 
@@ -53,7 +53,7 @@ export const aiService = {
       if (!response.ok) {
         return { status: 'unhealthy', models_loaded: false };
       }
-      return response.json();
+      return response.json() as Promise<{ status: string; models_loaded: boolean }>;
     } catch {
       return { status: 'unreachable', models_loaded: false };
     }

@@ -12,7 +12,7 @@ export const emailController = {
       try {
         await emailService.recordOpen(cid, uid, req.ip, req.get('user-agent'));
       } catch {
-        // Silently fail - tracking should never break the user experience
+
       }
     }
 
@@ -36,7 +36,7 @@ export const emailController = {
       try {
         await emailService.recordClick(cid, uid, req.ip, req.get('user-agent'));
       } catch {
-        // Silently fail
+      
       }
     }
 

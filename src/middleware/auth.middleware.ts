@@ -4,9 +4,6 @@ import { verifyAccessToken, extractTokenFromHeader } from '@/utils/auth';
 import prisma from '@/utils/database';
 import { logSecurityEvent } from '@/utils/logger';
 
-/**
- * Extend Express Request to include user
- */
 export interface AuthRequest extends Request {
   user?: {
     id: string;
@@ -16,9 +13,6 @@ export interface AuthRequest extends Request {
   };
 }
 
-/**
- * Authenticate middleware - Verify JWT token
- */
 export const authenticate = async (
   req: AuthRequest,
   res: Response,
@@ -55,12 +49,12 @@ export const authenticate = async (
       throw new UnauthorizedError('User not found');
     }
 
-    // Update last active timestamp (async, don't wait)
+    // Update last active timestamp
     prisma.user.update({
       where: { id: user.id },
       data: { lastActiveAt: new Date() },
     }).catch(() => {
-      // Ignore error, this is not critical
+      
     });
 
     // Attach user to request
@@ -77,9 +71,7 @@ export const authenticate = async (
   }
 };
 
-/**
- * Require Admin role
- */
+// Require Admin role
 export const requireAdmin = (
   req: AuthRequest,
   res: Response,
@@ -106,9 +98,7 @@ export const requireAdmin = (
   }
 };
 
-/**
- * Require User role (any authenticated user)
- */
+// Require User role (any authenticated user)
 export const requireUser = (
   req: AuthRequest,
   res: Response,
@@ -125,9 +115,7 @@ export const requireUser = (
   }
 };
 
-/**
- * Optional authentication - attach user if token exists, but don't require it
- */
+// Optional authentication - attach user if token exists, but don't require it
 export const optionalAuth = async (
   req: AuthRequest,
   res: Response,
@@ -166,9 +154,7 @@ export const optionalAuth = async (
   }
 };
 
-/**
- * Require same organization - User can only access resources from their organization
- */
+// Require same organization - User can only access resources from their organization
 export const requireSameOrganization = (organizationIdParam = 'organizationId') => {
   return (req: AuthRequest, res: Response, next: NextFunction): void => {
     try {

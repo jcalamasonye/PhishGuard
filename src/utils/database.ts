@@ -2,9 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import logger, { logDatabaseQuery } from './logger';
 import { config } from '@/config';
 
-/**
- * Prisma Client Extension for logging
- */
+// Prisma Client Extension for logging
 const prismaClientSingleton = () => {
   return new PrismaClient({
     log: config.isDevelopment
@@ -48,35 +46,29 @@ prisma.$on('warn' as never, (e: any) => {
   logger.warn('Database warning:', e);
 });
 
-/**
- * Connect to database
- */
+// Connect to database
 export const connectDatabase = async (): Promise<void> => {
   try {
     await prisma.$connect();
-    logger.info('✓ Database connected successfully');
+    logger.info('Database connected successfully');
   } catch (error) {
-    logger.error('✗ Database connection failed:', error);
+    logger.error('Database connection failed:', error);
     throw error;
   }
 };
 
-/**
- * Disconnect from database
- */
+// Disconnect from database
 export const disconnectDatabase = async (): Promise<void> => {
   try {
     await prisma.$disconnect();
-    logger.info('✓ Database disconnected successfully');
+    logger.info('Database disconnected successfully');
   } catch (error) {
-    logger.error('✗ Database disconnection failed:', error);
+    logger.error('Database disconnection failed:', error);
     throw error;
   }
 };
 
-/**
- * Check database connection health
- */
+// Check database connection health
 export const checkDatabaseHealth = async (): Promise<boolean> => {
   try {
     await prisma.$queryRaw`SELECT 1`;

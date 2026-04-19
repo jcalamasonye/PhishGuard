@@ -2,9 +2,7 @@ import winston from 'winston';
 import path from 'path';
 import { config } from '@/config';
 
-/**
- * Custom log format
- */
+// Custom log format
 const customFormat = winston.format.printf(({ level, message, timestamp, ...metadata }) => {
   let msg = `${timestamp} [${level}]: ${message}`;
   
@@ -15,9 +13,7 @@ const customFormat = winston.format.printf(({ level, message, timestamp, ...meta
   return msg;
 });
 
-/**
- * Create Winston logger instance
- */
+// Create Winston logger instance
 const logger = winston.createLogger({
   level: config.LOG_LEVEL,
   format: winston.format.combine(
@@ -60,18 +56,14 @@ const logger = winston.createLogger({
   exitOnError: false,
 });
 
-/**
- * Stream for Morgan HTTP logging middleware
- */
+// Stream for Morgan HTTP logging middleware
 export const stream = {
   write: (message: string) => {
     logger.info(message.trim());
   },
 };
 
-/**
- * Log HTTP requests
- */
+// Log HTTP requests
 export const logRequest = (req: any, res: any, duration: number) => {
   logger.info({
     method: req.method,
@@ -83,9 +75,7 @@ export const logRequest = (req: any, res: any, duration: number) => {
   });
 };
 
-/**
- * Log errors
- */
+// Log errors
 export const logError = (error: Error, context?: Record<string, any>) => {
   logger.error({
     message: error.message,
@@ -94,9 +84,7 @@ export const logError = (error: Error, context?: Record<string, any>) => {
   });
 };
 
-/**
- * Log security events
- */
+// Log security events
 export const logSecurityEvent = (event: string, details: Record<string, any>) => {
   logger.warn({
     type: 'SECURITY_EVENT',
@@ -105,9 +93,7 @@ export const logSecurityEvent = (event: string, details: Record<string, any>) =>
   });
 };
 
-/**
- * Log database queries (development only)
- */
+// Log database queries
 export const logDatabaseQuery = (query: string, params?: any[]) => {
   if (config.isDevelopment) {
     logger.debug({
