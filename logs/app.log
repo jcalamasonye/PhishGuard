@@ -1162,3 +1162,26 @@
 {"level":"info","message":"\nSIGINT received, starting graceful shutdown...","service":"phishguard-backend","timestamp":"2026-04-17 11:22:04"}
 {"level":"info","message":"HTTP server closed","service":"phishguard-backend","timestamp":"2026-04-17 11:22:04"}
 {"level":"info","message":"✓ Database disconnected successfully","service":"phishguard-backend","timestamp":"2026-04-17 11:22:04"}
+{"level":"info","message":"Database connected successfully","service":"phishguard-backend","timestamp":"2026-04-19 21:06:10"}
+{"level":"info","message":"Server started successfully!","service":"phishguard-backend","timestamp":"2026-04-19 21:06:10"}
+{"level":"info","message":"Environment: development","service":"phishguard-backend","timestamp":"2026-04-19 21:06:10"}
+{"level":"info","message":"Port: 3001","service":"phishguard-backend","timestamp":"2026-04-19 21:06:10"}
+{"level":"info","message":"API Version: v1","service":"phishguard-backend","timestamp":"2026-04-19 21:06:10"}
+{"level":"info","message":"Health Check: http://localhost:3001/health","service":"phishguard-backend","timestamp":"2026-04-19 21:06:10"}
+{"level":"info","message":"API Base URL: http://localhost:3001/api/v1","service":"phishguard-backend","timestamp":"2026-04-19 21:06:10"}
+{"level":"info","message":"\nSIGINT received, starting graceful shutdown...","service":"phishguard-backend","timestamp":"2026-04-19 21:06:12"}
+{"level":"info","message":"HTTP server closed","service":"phishguard-backend","timestamp":"2026-04-19 21:06:12"}
+{"level":"info","message":"\nSIGINT received, starting graceful shutdown...","service":"phishguard-backend","timestamp":"2026-04-19 21:06:12"}
+{"level":"info","message":"HTTP server closed","service":"phishguard-backend","timestamp":"2026-04-19 21:06:12"}
+{"level":"info","message":"Database connected successfully","service":"phishguard-backend","timestamp":"2026-04-19 21:11:21"}
+{"level":"info","message":"Server started successfully!","service":"phishguard-backend","timestamp":"2026-04-19 21:11:21"}
+{"level":"info","message":"Environment: development","service":"phishguard-backend","timestamp":"2026-04-19 21:11:21"}
+{"level":"info","message":"Port: 3001","service":"phishguard-backend","timestamp":"2026-04-19 21:11:21"}
+{"level":"info","message":"API Version: v1","service":"phishguard-backend","timestamp":"2026-04-19 21:11:21"}
+{"level":"info","message":"Health Check: http://localhost:3001/health","service":"phishguard-backend","timestamp":"2026-04-19 21:11:21"}
+{"level":"info","message":"API Base URL: http://localhost:3001/api/v1","service":"phishguard-backend","timestamp":"2026-04-19 21:11:21"}
+{"level":"info","message":"\nSIGINT received, starting graceful shutdown...","service":"phishguard-backend","timestamp":"2026-04-19 21:11:24"}
+{"level":"info","message":"HTTP server closed","service":"phishguard-backend","timestamp":"2026-04-19 21:11:24"}
+{"level":"info","message":"\nSIGINT received, starting graceful shutdown...","service":"phishguard-backend","timestamp":"2026-04-19 21:11:24"}
+{"level":"info","message":"HTTP server closed","service":"phishguard-backend","timestamp":"2026-04-19 21:11:24"}
+{"level":"info","message":"Database disconnected successfully","service":"phishguard-backend","timestamp":"2026-04-19 21:11:24"}
