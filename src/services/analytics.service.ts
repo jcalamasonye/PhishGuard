@@ -1,5 +1,12 @@
 import prisma from '../utils/database';
 
+interface DeptData {
+  users: number;
+  clicks: number;
+  total: number;
+  quizScores: number[];
+}
+
 export const analyticsService = {
   async getOverview(organizationId?: string) {
     const where = organizationId ? { organizationId } : {};
@@ -15,7 +22,7 @@ export const analyticsService = {
     });
 
     const totalEmails = participants.length;
-    const clickedEmails = participants.filter((p) => p.isLinkClicked).length;
+    const clickedEmails = participants.filter((p: { isLinkClicked: boolean }) => p.isLinkClicked).length;
     const overallClickRate = totalEmails > 0 ? (clickedEmails / totalEmails) * 100 : 0;
 
     const quizAttempts = await prisma.quizAttempt.findMany({
@@ -24,7 +31,8 @@ export const analyticsService = {
 
     const averageQuizScore =
       quizAttempts.length > 0
-        ? quizAttempts.reduce((sum, attempt) => sum + attempt.score, 0) / quizAttempts.length
+        ? quizAttempts.reduce((sum: number, attempt: { score: number }) => sum + attempt.score, 0) /
+          quizAttempts.length
         : 0;
 
     return {
@@ -44,44 +52,34 @@ export const analyticsService = {
       where: { ...where, role: 'USER', department: { not: null } },
       select: {
         department: true,
-        campaignParticipations: {
-          select: {
-            isLinkClicked: true,
-          },
-        },
-        quizAttempts: {
-          select: {
-            score: true,
-          },
-        },
+        campaignParticipations: { select: { isLinkClicked: true } },
+        quizAttempts: { select: { score: true } },
       },
     });
 
-    const departmentMap = new Map<string, { users: number; clicks: number; total: number; quizScores: number[] }>();
+    const departmentMap = new Map<string, DeptData>();
 
-    users.forEach((user) => {
+    users.forEach((user: typeof users[number]) => {
       const dept = user.department!;
       if (!departmentMap.has(dept)) {
         departmentMap.set(dept, { users: 0, clicks: 0, total: 0, quizScores: [] });
       }
-
       const deptData = departmentMap.get(dept)!;
       deptData.users++;
       deptData.total += user.campaignParticipations.length;
-      deptData.clicks += user.campaignParticipations.filter((p) => p.isLinkClicked).length;
-      deptData.quizScores.push(...user.quizAttempts.map((a) => a.score));
+      deptData.clicks += user.campaignParticipations.filter((p: { isLinkClicked: boolean }) => p.isLinkClicked).length;
+      deptData.quizScores.push(...user.quizAttempts.map((a: { score: number }) => a.score));
     });
 
-    const departments = Array.from(departmentMap.entries()).map(([name, data]) => ({
+    return Array.from(departmentMap.entries()).map(([name, data]) => ({
       name,
       userCount: data.users,
       clickRate: data.total > 0 ? (data.clicks / data.total) * 100 : 0,
-      averageQuizScore: data.quizScores.length > 0
-        ? data.quizScores.reduce((sum, score) => sum + score, 0) / data.quizScores.length
-        : 0,
+      averageQuizScore:
+        data.quizScores.length > 0
+          ? data.quizScores.reduce((sum: number, score: number) => sum + score, 0) / data.quizScores.length
+          : 0,
     }));
-
-    return departments;
   },
 
   async getRiskAssessment(organizationId?: string) {
@@ -94,27 +92,20 @@ export const analyticsService = {
         name: true,
         email: true,
         department: true,
-        campaignParticipations: {
-          select: {
-            isLinkClicked: true,
-          },
-        },
-        quizAttempts: {
-          select: {
-            score: true,
-          },
-        },
+        campaignParticipations: { select: { isLinkClicked: true } },
+        quizAttempts: { select: { score: true } },
       },
     });
 
-    const usersWithRisk = users.map((user) => {
+    const usersWithRisk = users.map((user: typeof users[number]) => {
       const totalCampaigns = user.campaignParticipations.length;
-      const clicks = user.campaignParticipations.filter((p) => p.isLinkClicked).length;
+      const clicks = user.campaignParticipations.filter((p: { isLinkClicked: boolean }) => p.isLinkClicked).length;
       const clickRate = totalCampaigns > 0 ? (clicks / totalCampaigns) * 100 : 0;
 
       const avgQuizScore =
         user.quizAttempts.length > 0
-          ? user.quizAttempts.reduce((sum, a) => sum + a.score, 0) / user.quizAttempts.length
+          ? user.quizAttempts.reduce((sum: number, a: { score: number }) => sum + a.score, 0) /
+            user.quizAttempts.length
           : 0;
 
       let riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
@@ -137,15 +128,11 @@ export const analyticsService = {
       };
     });
 
-    const highRisk = usersWithRisk.filter((u) => u.riskLevel === 'HIGH').length;
-    const mediumRisk = usersWithRisk.filter((u) => u.riskLevel === 'MEDIUM').length;
-    const lowRisk = usersWithRisk.filter((u) => u.riskLevel === 'LOW').length;
-
     return {
       summary: {
-        highRisk,
-        mediumRisk,
-        lowRisk,
+        highRisk: usersWithRisk.filter((u: { riskLevel: string }) => u.riskLevel === 'HIGH').length,
+        mediumRisk: usersWithRisk.filter((u: { riskLevel: string }) => u.riskLevel === 'MEDIUM').length,
+        lowRisk: usersWithRisk.filter((u: { riskLevel: string }) => u.riskLevel === 'LOW').length,
         total: users.length,
       },
       users: usersWithRisk,
@@ -161,66 +148,49 @@ export const analyticsService = {
         emailSentAt: { gte: startDate },
         ...(organizationId ? { campaign: { organizationId } } : {}),
       },
-      select: {
-        emailSentAt: true,
-        isLinkClicked: true,
-      },
+      select: { emailSentAt: true, isLinkClicked: true },
     });
 
     const trendMap = new Map<string, { total: number; clicks: number }>();
 
-    participants.forEach((p) => {
+    participants.forEach((p: { emailSentAt: Date | null; isLinkClicked: boolean }) => {
       if (p.emailSentAt) {
         const date = p.emailSentAt.toISOString().split('T')[0];
-        if (!trendMap.has(date)) {
-          trendMap.set(date, { total: 0, clicks: 0 });
-        }
+        if (!trendMap.has(date)) trendMap.set(date, { total: 0, clicks: 0 });
         const data = trendMap.get(date)!;
         data.total++;
         if (p.isLinkClicked) data.clicks++;
       }
     });
 
-    const trend = Array.from(trendMap.entries())
+    return Array.from(trendMap.entries())
       .map(([date, data]) => ({
         date,
-        clickRate: (data.clicks / data.total) * 100,
+        clickRate: data.total > 0 ? (data.clicks / data.total) * 100 : 0,
       }))
       .sort((a, b) => a.date.localeCompare(b.date));
-
-    return trend;
   },
 
   async getTemplatePerformance(organizationId?: string) {
     const campaigns = await prisma.campaign.findMany({
       where: organizationId ? { organizationId } : {},
       include: {
-        template: {
-          select: {
-            name: true,
-          },
-        },
-        participants: {
-          select: {
-            isLinkClicked: true,
-          },
-        },
+        template: { select: { name: true } },
+        participants: { select: { isLinkClicked: true } },
       },
     });
 
     const templateMap = new Map<string, { name: string; clicks: number; total: number }>();
 
-    campaigns.forEach((campaign) => {
+    campaigns.forEach((campaign: typeof campaigns[number]) => {
       const templateId = campaign.templateId;
       const templateName = campaign.template?.name || 'Unknown Template';
-
       if (!templateMap.has(templateId)) {
         templateMap.set(templateId, { name: templateName, clicks: 0, total: 0 });
       }
-
       const data = templateMap.get(templateId)!;
       data.total += campaign.participants.length;
-      data.clicks += campaign.participants.filter((p) => p.isLinkClicked).length;
+      data.clicks += campaign.participants.filter((p: { isLinkClicked: boolean }) => p.isLinkClicked).length;
     });
 
     return Array.from(templateMap.values()).map((t) => ({

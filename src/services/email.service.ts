@@ -14,11 +14,13 @@ const transporter = nodemailer.createTransport({
 });
 
 function buildTrackingPixelUrl(campaignId: string, userId: string): string {
-  return `${config.FRONTEND_URL}/api/track/open?cid=${campaignId}&uid=${userId}`;
+  // Pixel must hit the BACKEND so the server can record the open event
+  return `${config.BACKEND_URL}/api/${config.API_VERSION}/email/track/open?cid=${campaignId}&uid=${userId}`;
 }
 
 function buildTrackingLinkUrl(campaignId: string, userId: string): string {
-  return `${config.FRONTEND_URL}/training/${campaignId}?uid=${userId}`;
+  // Click goes to BACKEND which records it, then redirects to FRONTEND training page
+  return `${config.BACKEND_URL}/api/${config.API_VERSION}/email/track/click?cid=${campaignId}&uid=${userId}`;
 }
 
 function renderEmailBody(

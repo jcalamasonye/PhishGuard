@@ -162,7 +162,7 @@ export const userService = {
     });
 
     const totalCampaigns = campaigns.length;
-    const clickedCount = campaigns.filter((c) => c.isLinkClicked).length;
+    const clickedCount = campaigns.filter((c: { isLinkClicked: boolean }) => c.isLinkClicked).length;
     const clickRate = totalCampaigns > 0 ? (clickedCount / totalCampaigns) * 100 : 0;
 
     const quizAttempts = await prisma.quizAttempt.findMany({
@@ -172,14 +172,15 @@ export const userService = {
 
     const averageQuizScore =
       quizAttempts.length > 0
-        ? quizAttempts.reduce((sum, attempt) => sum + attempt.score, 0) / quizAttempts.length
+        ? quizAttempts.reduce((sum: number, attempt: { score: number }) => sum + attempt.score, 0) /
+          quizAttempts.length
         : 0;
 
     return {
       totalCampaigns,
       clickRate,
       averageQuizScore,
-      campaigns: campaigns.map((c) => ({
+      campaigns: campaigns.map((c: typeof campaigns[number]) => ({
         id: c.id,
         campaignName: c.campaign.name,
         dateSent: c.emailSentAt,

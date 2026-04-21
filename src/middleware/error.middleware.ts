@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { Prisma } from '@prisma/client';
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientValidationError,
+  PrismaClientInitializationError,
+} from '@prisma/client/runtime/library';
 import { ZodError } from 'zod';
 import { AppError, isOperationalError } from '@/utils/errors';
 import { sendError } from '@/utils/response';
@@ -56,28 +60,18 @@ export const errorHandler = (
   }
 
   // Handle Prisma errors
-  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+  if (err instanceof PrismaClientKnownRequestError) {
     handlePrismaError(err, res);
     return;
   }
 
-  if (err instanceof Prisma.PrismaClientValidationError) {
-    sendError(
-      res,
-      400,
-      'Invalid data provided',
-      'VALIDATION_ERROR'
-    );
+  if (err instanceof PrismaClientValidationError) {
+    sendError(res, 400, 'Invalid data provided', 'VALIDATION_ERROR');
     return;
   }
 
-  if (err instanceof Prisma.PrismaClientInitializationError) {
-    sendError(
-      res,
-      503,
-      'Database connection failed',
-      'DATABASE_ERROR'
-    );
+  if (err instanceof PrismaClientInitializationError) {
+    sendError(res, 503, 'Database connection failed', 'DATABASE_ERROR');
     return;
   }
 
@@ -129,7 +123,7 @@ export const errorHandler = (
 
 // Handle Prisma-specific errors
 const handlePrismaError = (
-  err: Prisma.PrismaClientKnownRequestError,
+  err: PrismaClientKnownRequestError,
   res: Response
 ): void => {
   switch (err.code) {

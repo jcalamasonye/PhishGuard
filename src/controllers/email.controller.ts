@@ -36,12 +36,13 @@ export const emailController = {
       try {
         await emailService.recordClick(cid, uid, req.ip, req.get('user-agent'));
       } catch {
-      
+        // Never block the redirect on a tracking error
       }
     }
 
-    // Redirect to training page
-    const trainingUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/training/${cid}`;
+    // Redirect to the frontend training page — this is the "caught" moment
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const trainingUrl = `${frontendUrl}/training/${cid}?uid=${uid}`;
     res.redirect(302, trainingUrl);
   },
 

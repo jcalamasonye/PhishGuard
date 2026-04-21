@@ -102,7 +102,7 @@ export const quizService = {
     }
 
     let correctCount = 0;
-    quiz.questions.forEach((question) => {
+    quiz.questions.forEach((question: { id: string; correctAnswer: number }) => {
       const userAnswer = data.answers[question.id];
       if (userAnswer === question.correctAnswer) {
         correctCount++;

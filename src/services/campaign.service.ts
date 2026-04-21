@@ -1,5 +1,4 @@
 import prisma from '../utils/database';
-import { CampaignStatus } from '@prisma/client';
 import { NotFoundError } from '../utils/errors';
 
 export const campaignService = {
@@ -136,7 +135,7 @@ export const campaignService = {
     return campaign;
   },
 
-  async update(id: string, data: { name?: string; description?: string; status?: CampaignStatus }) {
+  async update(id: string, data: { name?: string; description?: string; status?: 'DRAFT' | 'SCHEDULED' | 'ACTIVE' | 'COMPLETED' }) {
     const campaign = await prisma.campaign.update({
       where: { id },
       data,
