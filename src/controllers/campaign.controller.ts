@@ -1,8 +1,10 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth.middleware';
 import { campaignService } from '../services/campaign.service';
+import { emailService } from '../services/email.service';
 import { sendSuccess, sendCreated, sendPaginated, sendNoContent } from '../utils/response';
 import { asyncHandler } from '../middleware/error.middleware';
+import logger from '../utils/logger';
 
 export const campaignController = {
   getAll: asyncHandler(async (req: AuthRequest, res: Response) => {
@@ -40,8 +42,21 @@ export const campaignController = {
   }),
 
   launch: asyncHandler(async (req: AuthRequest, res: Response) => {
-    const campaign = await campaignService.launch(req.params['id'] as string);
-    sendSuccess(res, campaign, 'Campaign launched successfully');
+    const campaignId = req.params['id'] as string;
+
+    // Mark campaign as active and participants as sent
+    const campaign = await campaignService.launch(campaignId);
+
+    // Send phishing emails to all participants (non-blocking — respond immediately)
+    emailService.sendCampaignEmails(campaignId)
+      .then(({ sentCount, failedCount, total }) => {
+        logger.info(`Campaign ${campaignId} emails: ${sentCount}/${total} sent, ${failedCount} failed`);
+      })
+      .catch((err) => {
+        logger.error(`Campaign ${campaignId} email sending error:`, err);
+      });
+
+    sendSuccess(res, campaign, `Campaign launched successfully. Emails are being sent to all participants.`);
   }),
 
   getResults: asyncHandler(async (req: AuthRequest, res: Response) => {

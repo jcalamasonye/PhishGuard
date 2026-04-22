@@ -114,7 +114,7 @@ export const createTemplateSchema = z.object({
   subject: z.string().min(3).max(200),
   fromName: z.string().min(2).max(100),
   fromEmail: emailSchema,
-  body: z.string().min(50),
+  body: z.string().min(10, 'Email body must be at least 10 characters'),
   ctaText: z.string().max(100).optional(),
   ctaUrl: z.string().url().optional(),
   redFlags: z.array(z.string()).min(1, 'At least one red flag is required'),

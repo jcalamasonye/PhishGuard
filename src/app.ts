@@ -14,6 +14,9 @@ import routes from '@/routes';
 export const createApp = (): Application => {
   const app = express();
 
+  // Trust Railway's reverse proxy — required for correct IP detection and rate limiting
+  app.set('trust proxy', 1);
+
   // SECURITY MIDDLEWARE
   app.use(helmetMiddleware);
   app.use(corsMiddleware);
