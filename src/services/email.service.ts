@@ -3,11 +3,7 @@ import { config } from '@/config';
 import prisma from '@/utils/database';
 import logger from '@/utils/logger';
 
-// Resend client — uses RESEND_API_KEY from environment
 const resend = new Resend(process.env.RESEND_API_KEY);
-
-// Sending address — on Resend free tier use onboarding@resend.dev
-// Once a domain is verified in Resend, change this to your real domain
 const FROM_ADDRESS = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
 
 function buildTrackingPixelUrl(campaignId: string, userId: string): string {
@@ -47,8 +43,7 @@ function renderEmailBody(
             <a href="${trackingLink}"
                style="background-color:#1a56db;color:#ffffff;padding:14px 32px;
                       text-decoration:none;border-radius:6px;font-weight:600;
-                      font-size:15px;display:inline-block;font-family:Arial,sans-serif;
-                      letter-spacing:0.3px;">
+                      font-size:15px;display:inline-block;font-family:Arial,sans-serif;">
               ${template.ctaText}
             </a>
           </td>
@@ -73,29 +68,24 @@ function renderEmailBody(
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0"
                style="max-width:600px;width:100%;background-color:#ffffff;border-radius:8px;overflow:hidden;">
-
           <tr>
             <td style="background-color:#1e3a5f;padding:20px 32px;">
-              <p style="margin:0;color:#ffffff;font-size:18px;font-weight:700;
-                        letter-spacing:0.5px;font-family:Arial,sans-serif;">
+              <p style="margin:0;color:#ffffff;font-size:18px;font-weight:700;font-family:Arial,sans-serif;">
                 ${template.fromName}
               </p>
             </td>
           </tr>
-
           <tr>
             <td style="padding:32px 32px 24px 32px;color:#1f2937;font-size:15px;">
               ${htmlBody}
               ${ctaButton}
             </td>
           </tr>
-
           <tr>
             <td style="padding:0 32px;">
               <hr style="border:none;border-top:1px solid #e5e7eb;margin:0;"/>
             </td>
           </tr>
-
           <tr>
             <td style="padding:20px 32px 28px 32px;color:#9ca3af;font-size:12px;line-height:1.6;">
               <p style="margin:0 0 6px 0;">
@@ -107,11 +97,8 @@ function renderEmailBody(
               </p>
             </td>
           </tr>
-
         </table>
-
-        <table width="600" cellpadding="0" cellspacing="0"
-               style="max-width:600px;width:100%;margin-top:16px;">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;margin-top:16px;">
           <tr>
             <td align="center" style="color:#9ca3af;font-size:11px;padding:0 20px;">
               You are receiving this email because you are a registered user.
@@ -119,7 +106,6 @@ function renderEmailBody(
             </td>
           </tr>
         </table>
-
       </td>
     </tr>
   </table>
@@ -137,9 +123,7 @@ export const emailService = {
         template: true,
         participants: {
           include: {
-            user: {
-              select: { id: true, name: true, email: true },
-            },
+            user: { select: { id: true, name: true, email: true } },
           },
         },
         organization: {
@@ -148,9 +132,7 @@ export const emailService = {
       },
     });
 
-    if (!campaign) {
-      throw new Error('Campaign not found');
-    }
+    if (!campaign) throw new Error('Campaign not found');
 
     const fromName = campaign.template.fromName ||
       campaign.organization?.fromName ||
@@ -177,23 +159,21 @@ export const emailService = {
           html,
         });
 
-        if (error) {
-          throw new Error(error.message);
-        }
+        if (error) throw new Error(error.message);
 
         await prisma.emailEvent.create({
           data: { eventType: 'sent', campaignId, userId: participant.user.id },
         });
 
         sentCount++;
-        logger.info(`Email sent to ${participant.user.email} for campaign ${campaignId}`);
+        logger.info(`✓ Email sent to ${participant.user.email}`);
       } catch (err) {
         failedCount++;
-        logger.error(`Failed to send email to ${participant.user.email}: ${err}`);
+        logger.error(`✗ Failed to send to ${participant.user.email}: ${err}`);
       }
     }
 
-    logger.info(`Campaign ${campaignId} complete: ${sentCount} sent, ${failedCount} failed`);
+    logger.info(`Campaign ${campaignId} done: ${sentCount} sent, ${failedCount} failed`);
     return { sentCount, failedCount, total: campaign.participants.length };
   },
 
@@ -201,7 +181,6 @@ export const emailService = {
     await prisma.emailEvent.create({
       data: { eventType: 'opened', campaignId, userId, ipAddress, userAgent },
     });
-
     await prisma.campaignParticipant.updateMany({
       where: { campaignId, userId, isEmailOpened: false },
       data: { isEmailOpened: true, emailOpenedAt: new Date() },
@@ -230,17 +209,11 @@ export const emailService = {
   },
 
   async verifyConnection(): Promise<boolean> {
-    try {
-      // Resend doesn't need a connection test — just verify API key exists
-      if (!process.env.RESEND_API_KEY) {
-        logger.error('RESEND_API_KEY is not set');
-        return false;
-      }
-      logger.info('Resend API key is configured');
-      return true;
-    } catch (err) {
-      logger.error('Resend verification failed:', err);
+    if (!process.env.RESEND_API_KEY) {
+      logger.error('RESEND_API_KEY is not set');
       return false;
     }
+    logger.info('Resend API key configured');
+    return true;
   },
 };

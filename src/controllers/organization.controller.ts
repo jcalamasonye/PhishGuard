@@ -7,10 +7,11 @@ import { asyncHandler } from '@/middleware/error.middleware';
 export const organizationController = {
   get: asyncHandler(async (req: AuthRequest, res: Response) => {
     if (!req.user?.organizationId) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         error: { code: 'NOT_FOUND', message: 'No organization found' },
       });
+      return;
     }
 
     const org = await prisma.organization.findUnique({
@@ -22,10 +23,11 @@ export const organizationController = {
 
   update: asyncHandler(async (req: AuthRequest, res: Response) => {
     if (!req.user?.organizationId) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         error: { code: 'NOT_FOUND', message: 'No organization found' },
       });
+      return;
     }
 
     const { name, logo, primaryColor, secondaryColor, fromEmail, fromName } = req.body;
