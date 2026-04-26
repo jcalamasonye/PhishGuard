@@ -29,7 +29,7 @@ def test_legitimate_order():
 
 def test_legitimate_saas():
     email = 'Welcome to CloudApp! We have unlocked premium features for 30 days'
-    assert predict(email) == 0, 'Should recognize SaaS marketing'.
+    assert predict(email) == 0, 'Should recognize SaaS marketing'
 
 if __name__ == '__main__':
     pytest.main([__file__, '-v'])
