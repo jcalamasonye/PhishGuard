@@ -1,0 +1,6 @@
+{
+  "version": "2.0",
+  "type": "ensemble LR+SVM+RF",
+  "features": "TF-IDF 15k + 30 signals",
+  "accuracy": "98.90%"
+}
