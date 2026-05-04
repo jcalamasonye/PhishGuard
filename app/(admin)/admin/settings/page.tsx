@@ -9,6 +9,7 @@ import Button from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Toggle } from '@/components/ui/Toggle';
 import { useAuth } from '@/context/AuthContext';
+import { authService } from '@/services/authService';
 import { userService } from '@/services/userService';
 import apiClient from '@/lib/api-client';
 
@@ -43,18 +44,21 @@ export default function ProfileSettingsPage() {
   }, [user]);
 
   const handleSavePersonalInfo = async () => {
-    if (!user) return;
-    setSaving(true);
-    try {
-      await userService.update(user.id, { name: fullName });
-      setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 3000);
-    } catch (err) {
-      console.error('Failed to update profile:', err);
-    } finally {
-      setSaving(false);
-    }
-  };
+  if (!user) return;
+  setSaving(true);
+  try {
+    await userService.update(user.id, { name: fullName });
+    // Refresh user data in context
+    const updatedUser = await authService.getMe();
+    setFullName(updatedUser.name || '');
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
+  } catch (err) {
+    console.error('Failed to update profile:', err);
+  } finally {
+    setSaving(false);
+  }
+};
 
   const handleUpdatePassword = async () => {
     if (newPassword !== confirmPassword) {

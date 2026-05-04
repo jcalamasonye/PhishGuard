@@ -106,12 +106,8 @@ export default function TrainingPage() {
     }
   };
 
-  const handleGoToDashboard = () => {
-    if (isAdmin) {
-      router.push('/admin/dashboard');
-    } else {
-      router.push('/dashboard');
-    }
+ const handleGoToDashboard = () => {
+    router.push('/dashboard');
   };
 
   if (loading) {
