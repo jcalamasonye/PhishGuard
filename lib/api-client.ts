@@ -22,31 +22,39 @@ export interface BackendResponse<T = unknown> {
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
 
 
-const ACCESS_TOKEN_KEY = 'phishguard_access_token';
-const REFRESH_TOKEN_KEY = 'phishguard_refresh_token';
+const ROLE_KEY = 'phishguard_user_role';
+
+const getTokenKey = (type: 'access' | 'refresh') => {
+  const role = typeof window !== 'undefined' 
+    ? localStorage.getItem(ROLE_KEY) || 'user' 
+    : 'user';
+  return `phishguard_${role}_${type}_token`;
+};
 
 
 export const tokenStorage = {
   getAccessToken(): string | null {
     if (typeof window === 'undefined') return null;
-    return localStorage.getItem(ACCESS_TOKEN_KEY);
+    return localStorage.getItem(getTokenKey('access'));
   },
 
   getRefreshToken(): string | null {
     if (typeof window === 'undefined') return null;
-    return localStorage.getItem(REFRESH_TOKEN_KEY);
+    return localStorage.getItem(getTokenKey('refresh'));
   },
 
-  setTokens(accessToken: string, refreshToken: string): void {
+  setTokens(accessToken: string, refreshToken: string, role?: string): void {
     if (typeof window === 'undefined') return;
-    localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-    localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    if (role) localStorage.setItem(ROLE_KEY, role);
+    localStorage.setItem(getTokenKey('access'), accessToken);
+    localStorage.setItem(getTokenKey('refresh'), refreshToken);
   },
 
   clearTokens(): void {
     if (typeof window === 'undefined') return;
-    localStorage.removeItem(ACCESS_TOKEN_KEY);
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
+    localStorage.removeItem(getTokenKey('access'));
+    localStorage.removeItem(getTokenKey('refresh'));
+    localStorage.removeItem(ROLE_KEY);
   },
 };
 
