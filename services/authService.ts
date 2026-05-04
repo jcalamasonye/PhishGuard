@@ -9,9 +9,6 @@ import type {
   User,
 } from '@/types/auth';
 
-
-
-
 function normalizeUser(backendUser: Record<string, unknown>): User {
   return {
     id: backendUser.id as string,
@@ -46,12 +43,11 @@ export const authService = {
         password: credentials.password,
       }
     );
-
     const { user, accessToken, refreshToken } = response.data.data!;
-    tokenStorage.setTokens(accessToken, refreshToken);
-
+    const normalizedUser = normalizeUser(user);
+    tokenStorage.setTokens(accessToken, refreshToken, normalizedUser.role);
     return {
-      user: normalizeUser(user),
+      user: normalizedUser,
       message: response.data.message || 'Login successful',
     };
   },
@@ -63,7 +59,6 @@ export const authService = {
       password: data.password,
     };
 
-    
     if ('organizationName' in data) {
       payload.organizationName = data.organizationName;
     }
@@ -72,12 +67,11 @@ export const authService = {
       '/auth/register',
       payload
     );
-
     const { user, accessToken, refreshToken } = response.data.data!;
-    tokenStorage.setTokens(accessToken, refreshToken);
-
+    const normalizedUser = normalizeUser(user);
+    tokenStorage.setTokens(accessToken, refreshToken, normalizedUser.role);
     return {
-      user: normalizeUser(user),
+      user: normalizedUser,
       message: response.data.message || 'Registration successful',
     };
   },
@@ -86,7 +80,7 @@ export const authService = {
     try {
       await apiClient.post('/auth/logout');
     } catch {
-      
+      // silent fail
     } finally {
       tokenStorage.clearTokens();
     }
@@ -102,7 +96,6 @@ export const authService = {
       '/auth/forgot-password',
       { email: data.email }
     );
-
     return {
       message: response.data.message || 'If that email exists, a reset link has been sent.',
     };
@@ -116,7 +109,6 @@ export const authService = {
         newPassword: data.password,
       }
     );
-
     return {
       message: response.data.message || 'Password updated successfully.',
     };
